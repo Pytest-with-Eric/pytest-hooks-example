@@ -1,17 +1,36 @@
-def pytest_configure(config):
-    ##Initialize variables to store test results.
-    config._successful_tests = []
-    config._failed_tests = []
+import pytest
+from _pytest.nodes import Item
+from _pytest.runner import CallInfo
 
-def pytest_runtest_makereport(item, call):
-    ##Hook to capture the result of each test item.
-    if call.when == "call":
-        if call.excinfo is None or call.excinfo.typename != "AssertionError":
-            item.config._successful_tests.append(item.name)
-        else:
-            item.config._failed_tests.append(item.name)
 
+@pytest.hookimpl()
+def pytest_sessionstart(session):
+    print("Hello from `pytest_sessionstart` hook!")
+
+
+@pytest.hookimpl()
 def pytest_sessionfinish(session, exitstatus):
-    ##Hook to execute at the end of the test session.
-    print("\nSuccessful tests:", session.config._successful_tests)
-    print("Failed tests:", session.config._failed_tests)
+    print("Hello from `pytest_sessionfinish` hook!")
+    print(f"Exit status: {exitstatus}")
+
+
+@pytest.hookimpl(tryfirst=True)
+def pytest_runtest_makereport(item, call: CallInfo):
+    # Let's ensure we are dealing with a test report
+    if call.when == "call":
+        outcome = call.excinfo
+
+        try:
+            # Access the test outcome (passed, failed, etc.)
+            test_outcome = "failed" if outcome else "passed"
+            # Access the test duration
+            test_duration = call.duration
+            # Access the test ID (nodeid)
+            test_id = item.nodeid
+
+            # Print Test Outcome and Duration
+            print(f"Test: {test_id}")
+            print(f"Test Outcome: {test_outcome}")
+            print(f"Test Duration: {test_duration:.5f} seconds")
+        except Exception as e:
+            print("ERROR:", e)
