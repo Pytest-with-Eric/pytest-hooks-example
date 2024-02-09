@@ -1,10 +1,10 @@
-# pytest-configure
-This repo contains the sample code for the article on "Step-by-Step Comprehensive Guide to pytest Hooks for Effective Testing Strategies"
+# Pytest Hooks Example
+This repo contains the sample code for the article on [Introduction To Pytest Hooks (A Practical Guide For Beginners)](https://pytest-with-eric.com/hooks/pytest-hooks/)
 
 This guide covers pytest hooks and how they are used within the pytest framework, allowing you to plug in or alter the default behavior of the testing process.
 
 # Requirements
-* Python (3.11.4)
+* Python (3.11)
 
 Please install the dependencies via the `requirements.txt` file using 
 ```commandline
